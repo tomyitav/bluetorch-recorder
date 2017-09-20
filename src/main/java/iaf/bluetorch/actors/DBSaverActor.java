@@ -1,6 +1,8 @@
 package iaf.bluetorch.actors;
 
+import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
 import akka.actor.AbstractLoggingActor;
+import akka.actor.ActorRef;
 import akka.actor.Props;
 
 public class DBSaverActor extends AbstractLoggingActor {
@@ -14,19 +16,9 @@ public class DBSaverActor extends AbstractLoggingActor {
 		}
 	}
 	
-//	public DBSaverActor() {
-//		receive(
-//				ReceiveBuilder
-//					.match(SaveToDbMessage.class, this::onSaveMessage)
-//					.matchAny(somethingElse -> log().info("Recieved something else"))
-//					.build()
-//		); 
-//	}
-	
-	
-	
 	private void onSaveMessage(SaveToDbMessage message) {
 		log().info("***ACTOR-DB*** Got new Save message. id: " + message.id);
+		getSender().tell(new DBSaveAck(), ActorRef.noSender());
 	}
 	
 	@Override

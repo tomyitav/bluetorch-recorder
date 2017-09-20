@@ -27,6 +27,10 @@ public class TrackStateActor extends AbstractLoggingActor {
 		
 	}
 	
+	public static class DBSaveAck {
+		
+	}
+	
 	
 	
 	@Override
@@ -34,6 +38,7 @@ public class TrackStateActor extends AbstractLoggingActor {
 		return receiveBuilder()
 				.match(TrackUpdateMessage.class, this::onUpdateMessage)
 				.match(TrackSaveMessage.class, this::onSaveMessage)
+				.match(DBSaveAck.class, this::onDBSaveAck)
 				.matchAny(somethingElse -> log().info("Recieved something else"))
 				.build();
 	}
@@ -44,7 +49,11 @@ public class TrackStateActor extends AbstractLoggingActor {
 	
 	private void onSaveMessage(TrackSaveMessage message) {
 		log().info("***ACTOR-STATE*** Got new save message");
-		this.child.tell(new DBSaverActor.SaveToDbMessage(2), ActorRef.noSender());
+		this.child.tell(new DBSaverActor.SaveToDbMessage(2), getSelf());
+	}
+	
+	private void onDBSaveAck(DBSaveAck message) {
+		log().info("***ACTOR-ACK*** Got new Ack from child!!!");
 	}
 	
 	public static Props props() {
