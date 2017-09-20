@@ -1,4 +1,5 @@
 target/
+target/*
 target/classes/META-INF/maven/iaf.bluetorch/bluetorch-recorder/pom.properties
 pom.xml.tag
 pom.xml.releaseBackup
