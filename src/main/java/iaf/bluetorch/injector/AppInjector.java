@@ -7,7 +7,7 @@ public class AppInjector {
 	private static final AppInjector INSTANCE = new AppInjector();
 	private Injector injector;
 	
-	public AppInjector() {
+	private AppInjector() {
 		injector = Guice.createInjector(new DBModule());
 	}
 	
