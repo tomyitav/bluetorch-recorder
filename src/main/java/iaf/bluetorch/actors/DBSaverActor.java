@@ -1,11 +1,16 @@
 package iaf.bluetorch.actors;
 
 import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
+import iaf.bluetorch.db.entities.TrackEntity;
+import iaf.bluetorch.db.service.IDBService;
+import iaf.bluetorch.db.service.MongodbGenericPersistence;
 import akka.actor.AbstractLoggingActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 
 public class DBSaverActor extends AbstractLoggingActor {
+	
+	IDBService dbService = new MongodbGenericPersistence();
 	
 	//Protocol
 	public static class SaveToDbMessage {
@@ -16,8 +21,9 @@ public class DBSaverActor extends AbstractLoggingActor {
 		}
 	}
 	
-	private void onSaveMessage(SaveToDbMessage message) {
-		log().info("***ACTOR-DB*** Got new Save message. id: " + message.id);
+	private void onSaveMessage(SaveToDbMessage trackMessage) {
+		log().info("***ACTOR-DB*** Got new Save message. id: " + trackMessage.id);
+		dbService.persist(new TrackEntity(trackMessage.id));
 		getSender().tell(new DBSaveAck(), ActorRef.noSender());
 	}
 	
