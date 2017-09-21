@@ -1,5 +1,7 @@
 package iaf.bluetorch.actors;
 
+import org.apache.logging.log4j.Logger;
+
 import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
 import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.entities.TrackEntity;
@@ -12,6 +14,7 @@ import com.google.inject.Inject;
 
 public class DBSaverActor extends AbstractLoggingActor {
 	
+	@Inject private Logger logger;
 	@Inject private IDBService dbService;
 	
 	//Protocol

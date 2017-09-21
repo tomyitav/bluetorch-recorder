@@ -1,15 +1,21 @@
 package iaf.bluetorch.actors;
 
 import iaf.bluetorch.actors.utils.PropsGuiceFactory;
-import iaf.bluetorch.injector.AppInjector;
 
 import java.util.HashMap;
+
+import org.apache.logging.log4j.Logger;
+
+import com.google.inject.Inject;
 
 import akka.actor.AbstractLoggingActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 
 public class TrackStateActor extends AbstractLoggingActor {
+	
+	@Inject private Logger logger;
+	
 	HashMap<Integer, Integer> state = new HashMap<>();
 	boolean writeToDbAllowed = true;
 	final ActorRef child = getContext().actorOf(DBSaverActor.props(), "child");
@@ -48,6 +54,7 @@ public class TrackStateActor extends AbstractLoggingActor {
 
 	private void onUpdateMessage(TrackUpdateMessage message) {
 		log().info("***ACTOR-UPDATE*** Got new update message. id: " + message.id);
+		this.logger.error("***ACTOR-UPDATE*** ERRRRROOOOOORRRRRR!!!!: " + message.id);
 	}
 	
 	private void onSaveMessage(TrackSaveMessage message) {
