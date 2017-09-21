@@ -3,14 +3,16 @@ package iaf.bluetorch.actors;
 import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
 import iaf.bluetorch.db.entities.TrackEntity;
 import iaf.bluetorch.db.service.IDBService;
-import iaf.bluetorch.db.service.MongodbGenericPersistence;
+import iaf.bluetorch.injector.AppInjector;
 import akka.actor.AbstractLoggingActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 
+import com.google.inject.Inject;
+
 public class DBSaverActor extends AbstractLoggingActor {
 	
-	IDBService dbService = new MongodbGenericPersistence();
+	@Inject private IDBService dbService;
 	
 	//Protocol
 	public static class SaveToDbMessage {
@@ -36,6 +38,6 @@ public class DBSaverActor extends AbstractLoggingActor {
 	}
 
 	public static Props props() {
-		return Props.create(DBSaverActor.class);
+		return Props.create(GuiceInjectedActor.class, AppInjector.instance().getInjector(), DBSaverActor.class);
 	}
 }
