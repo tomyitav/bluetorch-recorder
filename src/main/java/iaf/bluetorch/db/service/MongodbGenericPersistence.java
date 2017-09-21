@@ -5,10 +5,13 @@ import iaf.bluetorch.db.entities.BasicEntity;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 
+import com.google.inject.Singleton;
+
 /**
  * The generic Persistence implementation, showing how to do persists, count entities, return a
  * specific one, and generate unique IDs.
  */
+@Singleton
 public class MongodbGenericPersistence implements IDBService {
 
   private final Datastore mongoDatastore;
