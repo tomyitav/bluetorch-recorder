@@ -1,5 +1,6 @@
 package iaf.bluetorch.actors;
 
+import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.injector.AppInjector;
 
 import java.util.HashMap;
@@ -59,6 +60,6 @@ public class TrackStateActor extends AbstractLoggingActor {
 	}
 	
 	public static Props props() {
-		return Props.create(GuiceInjectedActor.class, AppInjector.instance().getInjector(), TrackStateActor.class);
+		return PropsGuiceFactory.create(TrackStateActor.class);
 	}
 }

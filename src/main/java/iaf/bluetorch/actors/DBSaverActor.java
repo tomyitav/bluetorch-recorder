@@ -1,9 +1,9 @@
 package iaf.bluetorch.actors;
 
 import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
+import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.entities.TrackEntity;
 import iaf.bluetorch.db.service.IDBService;
-import iaf.bluetorch.injector.AppInjector;
 import akka.actor.AbstractLoggingActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
@@ -38,6 +38,6 @@ public class DBSaverActor extends AbstractLoggingActor {
 	}
 
 	public static Props props() {
-		return Props.create(GuiceInjectedActor.class, AppInjector.instance().getInjector(), DBSaverActor.class);
+		return PropsGuiceFactory.create(DBSaverActor.class);
 	}
 }
