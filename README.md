@@ -1,4 +1,4 @@
-# README #
+# bluetorch-recorder #
 
 This project is intended to periodically store HAGNA entities to MongoDB
 
