@@ -1,11 +1,20 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Configuration status="INFO">
+	<Properties>
+-		<Property name="log-path">C:/logs/</Property>
+-		<Property name="rollover-strategy-max">7</Property>
+-		<Property name="rolling-size-based">1 MB</Property>
+-	</Properties>
     <Appenders>
         <Console name="Console" target="SYSTEM_OUT">
             <PatternLayout pattern="%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n" />
         </Console>
-        <File name="MyFile" fileName="all.log" immediateFlush="true" append="false">
+        <File name="MyFile" fileName="${log-path}/recorder.log" immediateFlush="true">
             <PatternLayout pattern="%d{yyy-MM-dd HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"/>
+			<Policies>
+	-			<SizeBasedTriggeringPolicy size="${rolling-size-based}" />
+	-		</Policies>
+	-		<DefaultRolloverStrategy max="${rollover-strategy-max}" />
         </File>
     </Appenders>
     <Loggers>
