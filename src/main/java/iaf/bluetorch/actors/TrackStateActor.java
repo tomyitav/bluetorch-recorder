@@ -6,13 +6,13 @@ import java.util.HashMap;
 
 import org.apache.logging.log4j.Logger;
 
-import com.google.inject.Inject;
-
-import akka.actor.AbstractLoggingActor;
+import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 
-public class TrackStateActor extends AbstractLoggingActor {
+import com.google.inject.Inject;
+
+public class TrackStateActor extends AbstractActor {
 	
 	@Inject private Logger logger;
 	
@@ -48,21 +48,21 @@ public class TrackStateActor extends AbstractLoggingActor {
 				.match(TrackUpdateMessage.class, this::onUpdateMessage)
 				.match(TrackSaveMessage.class, this::onSaveMessage)
 				.match(DBSaveAck.class, this::onDBSaveAck)
-				.matchAny(somethingElse -> log().info("Recieved something else"))
+				.matchAny(somethingElse -> logger.warn("Recieved something else"))
 				.build();
 	}
 
 	private void onUpdateMessage(TrackUpdateMessage message) {
-		log().info("***ACTOR-UPDATE*** Got new update message. id: " + message.id);
+		logger.info("***ACTOR-UPDATE*** Got new update message. id: " + message.id);
 	}
 	
 	private void onSaveMessage(TrackSaveMessage message) {
-		log().info("***ACTOR-STATE*** Got new save message");
+		logger.info("***ACTOR-STATE*** Got new save message");
 		this.child.tell(new DBSaverActor.SaveToDbMessage(2), getSelf());
 	}
 	
 	private void onDBSaveAck(DBSaveAck message) {
-		log().info("***ACTOR-ACK*** Got new Ack from child!!!");
+		logger.info("***ACTOR-ACK*** Got new Ack from child!!!");
 	}
 	
 	public static Props props() {

@@ -1,18 +1,19 @@
 package iaf.bluetorch.actors;
 
-import org.apache.logging.log4j.Logger;
-
 import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
 import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.entities.TrackEntity;
 import iaf.bluetorch.db.service.IDBService;
-import akka.actor.AbstractLoggingActor;
+
+import org.apache.logging.log4j.Logger;
+
+import akka.actor.AbstractActor;
 import akka.actor.ActorRef;
 import akka.actor.Props;
 
 import com.google.inject.Inject;
 
-public class DBSaverActor extends AbstractLoggingActor {
+public class DBSaverActor extends AbstractActor {
 	
 	@Inject private Logger logger;
 	@Inject private IDBService dbService;
@@ -27,7 +28,7 @@ public class DBSaverActor extends AbstractLoggingActor {
 	}
 	
 	private void onSaveMessage(SaveToDbMessage trackMessage) {
-		log().info("***ACTOR-DB*** Got new Save message. id: " + trackMessage.id);
+		logger.info("***ACTOR-DB*** Got new Save message. id: " + trackMessage.id);
 		dbService.persist(new TrackEntity(trackMessage.id));
 		getSender().tell(new DBSaveAck(), ActorRef.noSender());
 	}
@@ -36,7 +37,7 @@ public class DBSaverActor extends AbstractLoggingActor {
 	public Receive createReceive() {
 		return receiveBuilder()
 				.match(SaveToDbMessage.class, this::onSaveMessage)
-				.matchAny(somethingElse -> log().info("Recieved something else"))
+				.matchAny(somethingElse -> logger.warn("Recieved something else"))
 				.build();
 	}
 
