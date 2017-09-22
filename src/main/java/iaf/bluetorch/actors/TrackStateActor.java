@@ -54,7 +54,6 @@ public class TrackStateActor extends AbstractLoggingActor {
 
 	private void onUpdateMessage(TrackUpdateMessage message) {
 		log().info("***ACTOR-UPDATE*** Got new update message. id: " + message.id);
-		this.logger.error("***ACTOR-UPDATE*** ERRRRROOOOOORRRRRR!!!!: " + message.id);
 	}
 	
 	private void onSaveMessage(TrackSaveMessage message) {

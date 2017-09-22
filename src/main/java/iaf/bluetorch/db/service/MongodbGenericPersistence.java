@@ -1,10 +1,13 @@
 package iaf.bluetorch.db.service;
+import iaf.bluetorch.db.config.IMongoDB;
 import iaf.bluetorch.db.config.MongoDB;
 import iaf.bluetorch.db.entities.BasicEntity;
+import iaf.bluetorch.injector.AppInjector;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 
 /**
@@ -14,31 +17,31 @@ import com.google.inject.Singleton;
 @Singleton
 public class MongodbGenericPersistence implements IDBService {
 
-  private final Datastore mongoDatastore;
+	@Inject private IMongoDB mongoConn;
 
-  public MongodbGenericPersistence() {
-    mongoDatastore = MongoDB.instance().getDatabase();
-  }
+	public <E extends BasicEntity> ObjectId persist(E entity) {
+		getDatastore().save(entity);
+		return entity.getId();
+	}
 
-  public <E extends BasicEntity> ObjectId persist(E entity) {
-    mongoDatastore.save(entity);
-    return entity.getId();
-  }
+	public <E extends BasicEntity> long count(Class<E> clazz) {
+		if (clazz == null) {
+			return 0;
+		}
 
-  public <E extends BasicEntity> long count(Class<E> clazz) {
-    if (clazz == null) {
-      return 0;
-    }
+		return getDatastore().find(clazz).count();
+	}
 
-    return mongoDatastore.find(clazz).count();
-  }
+	public <E extends BasicEntity> E get(Class<E> clazz, final ObjectId id) {
+		if ((clazz == null) || (id == null)) {
+			return null;
+		}
 
-  public <E extends BasicEntity> E get(Class<E> clazz, final ObjectId id) {
-    if ((clazz == null) || (id == null)) {
-      return null;
-    }
+		return getDatastore().find(clazz).field("id").equal(id).get();
+	}
 
-    return mongoDatastore.find(clazz).field("id").equal(id).get();
-  }
+	private Datastore getDatastore() {
+		return mongoConn.getDatabase();
+	}
 
 }
