@@ -16,8 +16,14 @@ import com.google.inject.Singleton;
 @Singleton
 public class MongodbGenericPersistence implements IDBService {
 
-	@Inject private Logger logger;
-	@Inject private IMongoDB mongoConn;
+	private Logger logger;
+	private IMongoDB mongoConn;
+	
+	@Inject
+	public MongodbGenericPersistence(Logger logger, IMongoDB mongoConn) {
+		this.logger = logger;
+		this.mongoConn = mongoConn;
+	}
 
 	public <E extends BasicEntity> ObjectId persist(E entity) {
 		logger.debug("Saving entity to db...");
