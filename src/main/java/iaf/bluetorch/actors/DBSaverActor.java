@@ -5,6 +5,7 @@ import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.entities.TrackEntity;
 import iaf.bluetorch.db.service.IDBService;
 
+import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.Logger;
 
 import akka.actor.AbstractActor;
@@ -16,6 +17,7 @@ import com.google.inject.Inject;
 public class DBSaverActor extends AbstractActor {
 	
 	@Inject private Logger logger;
+	@Inject private Configuration config;
 	@Inject private IDBService dbService;
 	
 	//Protocol
@@ -29,6 +31,8 @@ public class DBSaverActor extends AbstractActor {
 	
 	private void onSaveMessage(SaveToDbMessage trackMessage) {
 		logger.info("***ACTOR-DB*** Got new Save message. id: " + trackMessage.id);
+		String dbHost = config.getString("database.host");
+		System.out.println("DB HOSTTTTTTTT" + dbHost);
 		dbService.persist(new TrackEntity(trackMessage.id));
 		getSender().tell(new DBSaveAck(), ActorRef.noSender());
 	}

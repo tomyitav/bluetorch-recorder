@@ -1,5 +1,6 @@
 package iaf.bluetorch.injector;
 
+import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.Logger;
 
 import iaf.bluetorch.db.config.IMongoDB;
@@ -15,6 +16,7 @@ public class AppModule extends AbstractModule {
 	@Override
 	protected void configure() {
 		bind(Logger.class).toProvider(LoggerProvider.class).in(Singleton.class);
+		bind(Configuration.class).toProvider(ConfigurationProvider.class).in(Singleton.class);
 		bind(IMongoDB.class).to(MongoDB.class);
 		bind(IDBService.class).to(MongodbGenericPersistence.class);
 	}
