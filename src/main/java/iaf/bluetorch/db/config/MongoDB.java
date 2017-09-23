@@ -3,6 +3,7 @@ package iaf.bluetorch.db.config;
 import iaf.bluetorch.db.entities.BasicEntity;
 
 import org.apache.commons.configuration2.Configuration;
+import org.apache.logging.log4j.Logger;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
@@ -24,17 +25,19 @@ public class MongoDB implements IMongoDB {
 	public static final String DB_NAME = "track_history";
 
 	private Configuration config;
+	private Logger logger;
 	private Datastore datastore;
 	
 	@Inject 
-	public MongoDB(Configuration configuration) {
+	public MongoDB(Configuration configuration, Logger logger) {
+		this.logger = logger;
 		this.config = configuration;
 		this.datastore = initializeDatastore();
 	}
 
 	private Datastore initializeDatastore() {
 		String dbHost = this.config.getString("database.host");
-		System.out.println("InJJJJJJJEEEECCCCCTTTTTEEEEDDDDD" + dbHost);
+		logger.info("InJJJJJJJEEEECCCCCTTTTTEEEEDDDDD" + dbHost);
 		MongoClientOptions mongoOptions = MongoClientOptions.builder()
 		.socketTimeout(60000) // Wait 1m for a query to finish, https://jira.mongodb.org/browse/JAVA-1076
 		.connectTimeout(15000) // Try the initial connection for 15s, http://blog.mongolab.com/2013/10/do-you-want-a-timeout/
@@ -49,7 +52,7 @@ public class MongoDB implements IMongoDB {
 		.createDatastore(mongoClient, DB_NAME);
 	    datastore.ensureIndexes();
 	    datastore.ensureCaps();
-	    System.out.println("Connection to database '" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "' initialized");
+	    logger.info("Connection to database '" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "' initialized");
 	    return datastore;
 	}
 

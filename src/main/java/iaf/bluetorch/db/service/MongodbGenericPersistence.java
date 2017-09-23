@@ -2,6 +2,7 @@ package iaf.bluetorch.db.service;
 import iaf.bluetorch.db.config.IMongoDB;
 import iaf.bluetorch.db.entities.BasicEntity;
 
+import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
 
@@ -15,9 +16,11 @@ import com.google.inject.Singleton;
 @Singleton
 public class MongodbGenericPersistence implements IDBService {
 
+	@Inject private Logger logger;
 	@Inject private IMongoDB mongoConn;
 
 	public <E extends BasicEntity> ObjectId persist(E entity) {
+		logger.debug("Saving entity to db...");
 		getDatastore().save(entity);
 		return entity.getId();
 	}
