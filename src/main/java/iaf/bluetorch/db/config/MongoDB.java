@@ -23,10 +23,16 @@ public class MongoDB implements IMongoDB {
 	public static final int DB_PORT = 27017;
 	public static final String DB_NAME = "track_history";
 
-	@Inject private Configuration config;
+	private Configuration config;
 	private Datastore datastore;
+	
+	@Inject 
+	public MongoDB(Configuration configuration) {
+		this.config = configuration;
+		this.datastore = initializeDatastore();
+	}
 
-	public void initializeDatastore() {
+	private Datastore initializeDatastore() {
 		String dbHost = this.config.getString("database.host");
 		System.out.println("InJJJJJJJEEEECCCCCTTTTTEEEEDDDDD" + dbHost);
 		MongoClientOptions mongoOptions = MongoClientOptions.builder()
@@ -39,11 +45,12 @@ public class MongoDB implements IMongoDB {
 	    mongoClient = new MongoClient(new ServerAddress(DB_HOST, DB_PORT), mongoOptions);
 	
 	//    mongoClient.setWriteConcern(WriteConcern.SAFE);
-	    this.datastore = new Morphia().mapPackage(BasicEntity.class.getPackage().getName())
+	    Datastore datastore = new Morphia().mapPackage(BasicEntity.class.getPackage().getName())
 		.createDatastore(mongoClient, DB_NAME);
-	    this.datastore.ensureIndexes();
-	    this.datastore.ensureCaps();
+	    datastore.ensureIndexes();
+	    datastore.ensureCaps();
 	    System.out.println("Connection to database '" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "' initialized");
+	    return datastore;
 	}
 
 	// Creating the mongo connection is expensive - (re)use a singleton for performance reasons.
