@@ -1,7 +1,6 @@
 package iaf.bluetorch.db.config;
 
 import iaf.bluetorch.db.entities.BasicEntity;
-import iaf.bluetorch.injector.AppInjector;
 
 import org.apache.commons.configuration2.Configuration;
 import org.mongodb.morphia.Datastore;
@@ -27,12 +26,6 @@ public class MongoDB implements IMongoDB {
 	@Inject private Configuration config;
 	private Datastore datastore;
 
-	public MongoDB() {
-//		this.configuration = AppInjector.instance().getInjector().getInstance(Configuration.class);
-//		this.configuration = config;
-//		this.datastore = initializeDatastore();
-	}
-
 	public void initializeDatastore() {
 		String dbHost = this.config.getString("database.host");
 		System.out.println("InJJJJJJJEEEECCCCCTTTTTEEEEDDDDD" + dbHost);
@@ -53,9 +46,9 @@ public class MongoDB implements IMongoDB {
 	    System.out.println("Connection to database '" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "' initialized");
 	}
 
-  // Creating the mongo connection is expensive - (re)use a singleton for performance reasons.
-  // Both the underlying Java driver and Datastore are thread safe.
-  public Datastore getDatabase() {
-    return datastore;
-  }
+	// Creating the mongo connection is expensive - (re)use a singleton for performance reasons.
+	// Both the underlying Java driver and Datastore are thread safe.
+	public Datastore getDatabase() {
+		return datastore;
+	}
 }

@@ -1,8 +1,6 @@
 package iaf.bluetorch.db.service;
 import iaf.bluetorch.db.config.IMongoDB;
-import iaf.bluetorch.db.config.MongoDB;
 import iaf.bluetorch.db.entities.BasicEntity;
-import iaf.bluetorch.injector.AppInjector;
 
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;

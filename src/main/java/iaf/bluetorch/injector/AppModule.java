@@ -1,12 +1,11 @@
 package iaf.bluetorch.injector;
 
-import org.apache.commons.configuration2.Configuration;
-import org.apache.logging.log4j.Logger;
-
 import iaf.bluetorch.db.config.IMongoDB;
-import iaf.bluetorch.db.config.MongoDB;
 import iaf.bluetorch.db.service.IDBService;
 import iaf.bluetorch.db.service.MongodbGenericPersistence;
+
+import org.apache.commons.configuration2.Configuration;
+import org.apache.logging.log4j.Logger;
 
 import com.google.inject.AbstractModule;
 import com.google.inject.Singleton;
