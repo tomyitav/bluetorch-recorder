@@ -17,7 +17,7 @@ public class AppModule extends AbstractModule {
 	protected void configure() {
 		bind(Logger.class).toProvider(LoggerProvider.class).in(Singleton.class);
 		bind(Configuration.class).toProvider(ConfigurationProvider.class).in(Singleton.class);
-		bind(IMongoDB.class).to(MongoDB.class);
+		bind(IMongoDB.class).toProvider(MongoProvider.class).in(Singleton.class);
 		bind(IDBService.class).to(MongodbGenericPersistence.class);
 	}
 

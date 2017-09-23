@@ -1,10 +1,13 @@
 package iaf.bluetorch.db.config;
 
 import iaf.bluetorch.db.entities.BasicEntity;
+import iaf.bluetorch.injector.AppInjector;
 
+import org.apache.commons.configuration2.Configuration;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
 
+import com.google.inject.Inject;
 import com.google.inject.Singleton;
 import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
@@ -21,13 +24,18 @@ public class MongoDB implements IMongoDB {
 	public static final int DB_PORT = 27017;
 	public static final String DB_NAME = "track_history";
 
-	private final Datastore datastore;
+	@Inject private Configuration config;
+	private Datastore datastore;
 
 	public MongoDB() {
-		this.datastore = initializeDatastore();
+//		this.configuration = AppInjector.instance().getInjector().getInstance(Configuration.class);
+//		this.configuration = config;
+//		this.datastore = initializeDatastore();
 	}
 
-	private Datastore initializeDatastore() {
+	public void initializeDatastore() {
+		String dbHost = this.config.getString("database.host");
+		System.out.println("InJJJJJJJEEEECCCCCTTTTTEEEEDDDDD" + dbHost);
 		MongoClientOptions mongoOptions = MongoClientOptions.builder()
 		.socketTimeout(60000) // Wait 1m for a query to finish, https://jira.mongodb.org/browse/JAVA-1076
 		.connectTimeout(15000) // Try the initial connection for 15s, http://blog.mongolab.com/2013/10/do-you-want-a-timeout/
@@ -38,12 +46,11 @@ public class MongoDB implements IMongoDB {
 	    mongoClient = new MongoClient(new ServerAddress(DB_HOST, DB_PORT), mongoOptions);
 	
 	//    mongoClient.setWriteConcern(WriteConcern.SAFE);
-	    Datastore datastoreInstance = new Morphia().mapPackage(BasicEntity.class.getPackage().getName())
+	    this.datastore = new Morphia().mapPackage(BasicEntity.class.getPackage().getName())
 		.createDatastore(mongoClient, DB_NAME);
-	    datastoreInstance.ensureIndexes();
-	    datastoreInstance.ensureCaps();
+	    this.datastore.ensureIndexes();
+	    this.datastore.ensureCaps();
 	    System.out.println("Connection to database '" + DB_HOST + ":" + DB_PORT + "/" + DB_NAME + "' initialized");
-	    return datastoreInstance;
 	}
 
   // Creating the mongo connection is expensive - (re)use a singleton for performance reasons.
