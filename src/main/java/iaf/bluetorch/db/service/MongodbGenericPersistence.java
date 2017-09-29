@@ -5,6 +5,7 @@ import iaf.bluetorch.db.entities.BasicEntity;
 import org.apache.logging.log4j.Logger;
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.Datastore;
+import org.mongodb.morphia.Key;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -29,6 +30,12 @@ public class MongodbGenericPersistence implements IDBService {
 		logger.debug("Saving entity to db...");
 		getDatastore().save(entity);
 		return entity.getId();
+	}
+	
+	public <E extends BasicEntity> Iterable<Key<E>> persist(Iterable<E> entity) {
+		logger.debug("Saving entity collection to db...");
+		Iterable<Key<E>> keys = getDatastore().save(entity);
+		return keys;
 	}
 
 	public <E extends BasicEntity> long count(Class<E> clazz) {

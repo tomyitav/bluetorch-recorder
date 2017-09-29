@@ -4,6 +4,7 @@ import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
 import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.entities.TrackEntity;
 import iaf.bluetorch.db.service.IDBService;
+import iaf.bluetorch.trackstore.ITrackStore;
 
 import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.Logger;
@@ -22,18 +23,22 @@ public class DBSaverActor extends AbstractActor {
 	
 	//Protocol
 	public static class SaveToDbMessage {
-		private Integer id;
-		
-		public SaveToDbMessage(Integer id) {
-			this.id = id;
+		private ITrackStore trackStore;
+
+		public SaveToDbMessage(ITrackStore trackStore) {
+			this.trackStore = trackStore;
+		}
+
+		public ITrackStore getTrackStore() {
+			return trackStore;
 		}
 	}
 	
 	private void onSaveMessage(SaveToDbMessage trackMessage) {
-		logger.info("***ACTOR-DB*** Got new Save message. id: " + trackMessage.id);
-		String dbHost = config.getString("database.host");
-		System.out.println("DB HOSTTTTTTTT" + dbHost);
-		dbService.persist(new TrackEntity(trackMessage.id));
+		logger.info("***ACTOR-DB*** Got new Save message: ");
+		String dbHost = config.getString("db.host");
+		System.out.println("DB HOST - " + dbHost);
+		dbService.persist(trackMessage.getTrackStore());
 		getSender().tell(new DBSaveAck(), ActorRef.noSender());
 	}
 	

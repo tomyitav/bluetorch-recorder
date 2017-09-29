@@ -2,27 +2,23 @@ package iaf.bluetorch.db.entities;
 
 public class TrackEntity extends BasicEntity {
 	
-	private Integer randId;
+	private Integer id;
+	private Integer val;
 	
-	public TrackEntity(Integer randId) {
-		super();
-		this.randId = randId;
+	public TrackEntity(Integer id, Integer val) {
+		this.id = id;
+		this.val = val;
 	}
-
-	public Integer getRandId() {
-		return randId;
+	public Integer getTrackId() {
+		return id;
 	}
-
-	public TrackEntity setRandId(Integer randId) {
-		this.randId = randId;
-		return this;
+	public Integer getVal() {
+		return val;
 	}
-
+	
 	@Override
 	public String toString() {
-		return "TrackEntity [randId=" + randId + ", id=" + id
-				+ ", creationDate=" + creationDate + ", lastChange="
-				+ lastChange + "]";
+		return "TrackEntity [id=" + id + ", val=" + val + "]";
 	}
-
+	
 }

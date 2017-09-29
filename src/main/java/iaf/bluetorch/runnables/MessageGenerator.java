@@ -20,11 +20,12 @@ public class MessageGenerator implements Runnable {
 	public void run() {
 		while(true) {
 			try {
-				Thread.sleep((long)(Math.random() * 1000));
+				double randMsg = Math.random();
+				Thread.sleep((long)(randMsg * 1000));
 				DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
 				Date date = new Date();
 				System.out.println("Simulating send to actor..." + dateFormat.format(date));
-				this.trackMessageActor.tell(new TrackStateActor.TrackUpdateMessage(1,1), ActorRef.noSender());
+				this.trackMessageActor.tell(new TrackStateActor.TrackUpdateMessage((int) (randMsg * 10), 1), ActorRef.noSender());
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}
