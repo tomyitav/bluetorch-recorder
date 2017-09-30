@@ -38,4 +38,8 @@ public class TrackStore implements ITrackStore {
 		return new TrackStore((HashMap<Integer, TrackEntity>) trackMap.clone());
 	}
 	
+	public int size() {
+		return trackMap.size();
+	}
+	
 }
