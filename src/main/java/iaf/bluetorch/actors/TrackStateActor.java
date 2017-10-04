@@ -2,7 +2,7 @@ package iaf.bluetorch.actors;
 
 import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.entities.TrackEntity;
-import iaf.bluetorch.trackstore.ITrackStore;
+import iaf.bluetorch.entitystore.IEntityStore;
 
 import java.util.HashMap;
 
@@ -17,7 +17,7 @@ import com.google.inject.Inject;
 public class TrackStateActor extends AbstractActor {
 	
 	@Inject private Logger logger;
-	@Inject private ITrackStore trackStore;
+	@Inject private IEntityStore trackStore;
 	
 	HashMap<Integer, Integer> state = new HashMap<>();
 	boolean canWriteToDB = true;
@@ -62,7 +62,7 @@ public class TrackStateActor extends AbstractActor {
 		logger.info("***ACTOR-STATE*** Got new save message");
 		try {
 			if(canWriteToDB) {
-				this.child.tell(new DBSaverActor.SaveToDbMessage((ITrackStore) trackStore.clone()), getSelf());
+				this.child.tell(new DBSaverActor.SaveToDbMessage((IEntityStore) trackStore.clone()), getSelf());
 				trackStore.clear();
 				canWriteToDB= false;
 			}

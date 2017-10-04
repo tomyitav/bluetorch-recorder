@@ -2,18 +2,19 @@ package iaf.bluetorch.trackstore;
 
 import static org.junit.Assert.*;
 import iaf.bluetorch.db.entities.TrackEntity;
+import iaf.bluetorch.entitystore.EntityStore;
 
 import org.junit.Before;
 import org.junit.BeforeClass;
 import org.junit.Test;
 
-public class TrackStoreTest {
+public class EntityStoreTest {
 
-	static TrackStore t;
+	static EntityStore t;
 	
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		t = new TrackStore();
+		t = new EntityStore();
 	}
 	
 	@Before
@@ -33,7 +34,7 @@ public class TrackStoreTest {
 		assertEquals(t.size(), 0);
 		t.add(new TrackEntity(1, 1));
 		try {
-			TrackStore cloneT = (TrackStore) t.clone();
+			EntityStore cloneT = (EntityStore) t.clone();
 			assertNotEquals(t, cloneT);
 			assertNotEquals(t.iterator(), cloneT.iterator());
 			assertEquals(t.size(), cloneT.size());

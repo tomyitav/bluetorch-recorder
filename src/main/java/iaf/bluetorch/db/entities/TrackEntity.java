@@ -9,7 +9,9 @@ public class TrackEntity extends BasicEntity {
 		this.id = id;
 		this.val = val;
 	}
-	public Integer getTrackId() {
+	
+	@Override
+	public Integer getEntityId() {
 		return id;
 	}
 	public Integer getVal() {

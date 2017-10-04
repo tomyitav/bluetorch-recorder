@@ -22,7 +22,7 @@ public abstract class BasicEntity {
   /**
    * We'll only provide getters for these attributes, setting is done in @PrePersist.
    */
-  @Indexed(options = @IndexOptions(name = "try", expireAfterSeconds = 0))
+  @Indexed(options = @IndexOptions(name = "try", expireAfterSeconds = 3600))
   protected Date creationDate;
   protected Date lastChange;
 
@@ -55,5 +55,6 @@ public abstract class BasicEntity {
   }
 
   public abstract String toString();
+  public abstract Integer getEntityId();
 
 }
