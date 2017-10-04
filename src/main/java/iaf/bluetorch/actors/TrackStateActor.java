@@ -23,14 +23,13 @@ import com.mongodb.MongoSocketReadException;
 public class TrackStateActor extends AbstractActor {
 	
 	@Inject private Logger logger;
-	@Inject private Configuration config;
 	@Inject private IEntityStore trackStore;
 	
 	HashMap<Integer, Integer> state = new HashMap<>();
 	boolean canWriteToDB = true;
 	
-	private final OneForOneStrategy STRATEGY = new OneForOneStrategy(
-		    config.getInt("actor.numberOfTries"),
+	private static final OneForOneStrategy STRATEGY = new OneForOneStrategy(
+		    100,
 		    Duration.create("10 seconds"),
 		    DeciderBuilder
 		      .match(MongoSocketReadException.class, ex -> SupervisorStrategy.resume())
