@@ -1,10 +1,12 @@
 package iaf.bluetorch.db.entities;
+import java.util.Date;
+
 import org.bson.types.ObjectId;
 import org.mongodb.morphia.annotations.Id;
+import org.mongodb.morphia.annotations.IndexOptions;
+import org.mongodb.morphia.annotations.Indexed;
 import org.mongodb.morphia.annotations.PrePersist;
 import org.mongodb.morphia.annotations.Version;
-
-import java.util.Date;
 
 /**
  * Provide the BaseEntity implementation for all entities:
@@ -20,6 +22,7 @@ public abstract class BasicEntity {
   /**
    * We'll only provide getters for these attributes, setting is done in @PrePersist.
    */
+  @Indexed(options = @IndexOptions(name = "try", expireAfterSeconds = 0))
   protected Date creationDate;
   protected Date lastChange;
 
