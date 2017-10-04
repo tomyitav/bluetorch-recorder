@@ -1,6 +1,10 @@
 # bluetorch-recorder #
 
-This project is intended to periodically store HAGNA entities to MongoDB
+This project is intended to periodically store entities to MongoDB, using:
+
+ - Akka
+ - Morphia as mongo ODM
+ - Guice for DI
 
 ### Project structure ###
 
