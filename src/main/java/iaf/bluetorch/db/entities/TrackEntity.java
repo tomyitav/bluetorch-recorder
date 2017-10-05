@@ -1,18 +1,22 @@
 package iaf.bluetorch.db.entities;
 
+import org.mongodb.morphia.annotations.IndexOptions;
+import org.mongodb.morphia.annotations.Indexed;
+
 public class TrackEntity extends BasicEntity {
 	
-	private Integer id;
+	@Indexed(options = @IndexOptions(name = "idInd"))
+	private Integer trackId;
 	private Integer val;
 	
 	public TrackEntity(Integer id, Integer val) {
-		this.id = id;
+		this.trackId = id;
 		this.val = val;
 	}
 	
 	@Override
 	public Integer getEntityId() {
-		return id;
+		return trackId;
 	}
 	public Integer getVal() {
 		return val;
@@ -20,7 +24,7 @@ public class TrackEntity extends BasicEntity {
 	
 	@Override
 	public String toString() {
-		return "TrackEntity [id=" + id + ", val=" + val + "]";
+		return "TrackEntity [id=" + trackId + ", val=" + val + "]";
 	}
 	
 }

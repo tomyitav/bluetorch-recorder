@@ -4,9 +4,6 @@ import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.entities.TrackEntity;
 import iaf.bluetorch.entitystore.IEntityStore;
 
-import java.util.HashMap;
-
-import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.Logger;
 
 import scala.concurrent.duration.Duration;
@@ -25,7 +22,6 @@ public class TrackStateActor extends AbstractActor {
 	@Inject private Logger logger;
 	@Inject private IEntityStore trackStore;
 	
-	HashMap<Integer, Integer> state = new HashMap<>();
 	boolean canWriteToDB = true;
 	
 	private static final OneForOneStrategy STRATEGY = new OneForOneStrategy(
