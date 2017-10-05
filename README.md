@@ -12,8 +12,10 @@ This project is intended to periodically store entities to MongoDB, using:
 * actors - for handling asynchronous operations
 * db package - interacting with MongoDB
 
+
 ### How do I get set up? ###
 
 * Git clone project
+* Create configuration file. Example can be found in test directory - RecorderConfigTest
 * mvn clean install
 * run main class

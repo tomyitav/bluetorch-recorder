@@ -1,5 +1,7 @@
 package iaf.bluetorch.injector;
 
+import iaf.bluetorch.core.IRecorderConfig;
+import iaf.bluetorch.core.RecorderConfig;
 import iaf.bluetorch.db.config.IMongoDB;
 import iaf.bluetorch.db.service.IDBService;
 import iaf.bluetorch.db.service.MongodbGenericPersistence;
@@ -21,6 +23,7 @@ public class AppModule extends AbstractModule {
 		bind(IMongoDB.class).toProvider(MongoProvider.class).in(Singleton.class);
 		bind(IDBService.class).to(MongodbGenericPersistence.class);
 		bind(IEntityStore.class).to(EntityStore.class);
+		bind(IRecorderConfig.class).to(RecorderConfig.class);
 	}
 
 }
