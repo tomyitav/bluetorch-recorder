@@ -23,15 +23,15 @@ public class TrackStateActor extends AbstractActor {
 	@Inject private IEntityStore trackStore;
 	
 	boolean canWriteToDB = true;
-	
+
 	private static final OneForOneStrategy STRATEGY = new OneForOneStrategy(
-		    100,
-		    Duration.create("10 seconds"),
-		    DeciderBuilder
-		      .match(MongoSocketReadException.class, ex -> SupervisorStrategy.resume())
-		      .build()
-		  );
-	
+			100,
+			Duration.create("10 seconds"),
+			DeciderBuilder
+			.match(MongoSocketReadException.class, ex -> SupervisorStrategy.restart())
+			.build()
+			);
+
 	final ActorRef child = getContext().actorOf(DBSaverActor.props(), "child");
 	
 	//Protocol

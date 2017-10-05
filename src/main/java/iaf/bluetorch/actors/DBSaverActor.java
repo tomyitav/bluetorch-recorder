@@ -48,6 +48,13 @@ public class DBSaverActor extends AbstractActor {
 				.matchAny(somethingElse -> logger.warn("Recieved something else"))
 				.build();
 	}
+	
+	@Override
+	public void postRestart(Throwable reason) throws Exception {
+//		super.postRestart(reason);
+		logger.info("DB Actor restart, sending ack to parent...");
+		context().parent().tell(new DBSaveAck(), ActorRef.noSender());
+	}
 
 	public static Props props() {
 		return PropsGuiceFactory.create(DBSaverActor.class);
