@@ -1,7 +1,6 @@
 package iaf.bluetorch.actors;
 
 import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
-import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.service.IDBService;
 import iaf.bluetorch.entitystore.IEntityStore;
 

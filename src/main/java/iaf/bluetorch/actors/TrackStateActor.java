@@ -1,6 +1,5 @@
 package iaf.bluetorch.actors;
 
-import iaf.bluetorch.actors.utils.PropsGuiceFactory;
 import iaf.bluetorch.db.entities.TrackEntity;
 import iaf.bluetorch.entitystore.IEntityStore;
 

@@ -1,6 +1,5 @@
-package iaf.bluetorch.actors.utils;
+package iaf.bluetorch.actors;
 
-import iaf.bluetorch.actors.GuiceInjectedActor;
 import iaf.bluetorch.injector.AppInjector;
 import akka.actor.Props;
 
