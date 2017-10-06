@@ -1,8 +1,8 @@
 package iaf.bluetorch.db.config;
 
+import iaf.bluetorch.core.IRecorderConfig;
 import iaf.bluetorch.db.entities.BasicEntity;
 
-import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.Logger;
 import org.mongodb.morphia.Datastore;
 import org.mongodb.morphia.Morphia;
@@ -20,24 +20,24 @@ import com.mongodb.ServerAddress;
 @Singleton
 public class MongoDB implements IMongoDB {
 
-	private Configuration config;
+	private IRecorderConfig config;
 	private Logger logger;
 	private Datastore datastore;
 	
 	@Inject 
-	public MongoDB(Configuration configuration, Logger logger) {
+	public MongoDB(IRecorderConfig configuration, Logger logger) {
 		this.logger = logger;
 		this.config = configuration;
 		this.datastore = initializeDatastore();
 	}
 
 	private Datastore initializeDatastore() {
-		String dbHost = this.config.getString("db.host");
-		int dbPort = this.config.getInt("db.port");
-		String dbName = this.config.getString("db.name");
-		int socketTimeout = this.config.getInt("db.socketTimeout");
-		int connectTimeout = this.config.getInt("db.connectTimeout");
-		int maxConnectionIdleTime = this.config.getInt("db.maxConnectionIdleTime");
+		String dbHost = this.config.dbHost();
+		int dbPort = this.config.dbPort();
+		String dbName = this.config.dbName();
+		int socketTimeout = this.config.dbSocketTimeout();
+		int connectTimeout = this.config.dbConnectTimeout();
+		int maxConnectionIdleTime = this.config.dbMaxConnectionIdleTime();
 		
 		MongoClientOptions mongoOptions = MongoClientOptions.builder()
 		.socketTimeout(socketTimeout) // Wait 1m for a query to finish, https://jira.mongodb.org/browse/JAVA-1076
@@ -57,8 +57,6 @@ public class MongoDB implements IMongoDB {
 	    return datastore;
 	}
 
-	// Creating the mongo connection is expensive - (re)use a singleton for performance reasons.
-	// Both the underlying Java driver and Datastore are thread safe.
 	public Datastore getDatabase() {
 		return datastore;
 	}

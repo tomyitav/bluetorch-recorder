@@ -3,7 +3,9 @@ package iaf.bluetorch.core;
 import org.apache.commons.configuration2.Configuration;
 
 import com.google.inject.Inject;
+import com.google.inject.Singleton;
 
+@Singleton
 public class RecorderConfig implements IRecorderConfig {
 	
 	private Configuration config;

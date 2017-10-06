@@ -1,4 +1,4 @@
-package iaf.bluetorch.trackstore;
+package iaf.bluetorch.entitystore;
 
 import static org.junit.Assert.*;
 import iaf.bluetorch.db.entities.TrackEntity;
