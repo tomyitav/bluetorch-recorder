@@ -14,7 +14,8 @@ public class ConfigurationProvider implements Provider<Configuration> {
 	public Configuration get() {
 		Configurations configBuilder = new Configurations();
 		try {
-			Configuration config = configBuilder.properties(new File("c://config//config.properties"));
+			String localConfigDir = System.getenv("LOCAL_CONFIG_DIR");
+			Configuration config = configBuilder.properties(new File(localConfigDir + File.separator + "config.properties"));
 			return config;
 		} catch (ConfigurationException e) {
 			e.printStackTrace();
