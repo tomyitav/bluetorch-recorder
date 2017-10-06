@@ -17,6 +17,6 @@ This project is intended to periodically store entities to MongoDB, using:
 
 * Git clone project
 * mvn clean install
-* Create configuration file, config.properties. Example can be found in test directory - RecorderConfigTest
+* Create configuration file, config.properties. Example can be found in test directory - RecorderConfigTest.java
 * Create environment variable - LOCAL_CONFIG_DIR that contains path to config file.
 * run main class
