@@ -4,7 +4,6 @@ import iaf.bluetorch.actors.TrackStateActor.DBSaveAck;
 import iaf.bluetorch.db.service.IDBService;
 import iaf.bluetorch.entitystore.IEntityStore;
 
-import org.apache.commons.configuration2.Configuration;
 import org.apache.logging.log4j.Logger;
 
 import akka.actor.AbstractActor;
@@ -16,7 +15,6 @@ import com.google.inject.Inject;
 public class DBSaverActor extends AbstractActor {
 	
 	@Inject private Logger logger;
-	@Inject private Configuration config;
 	@Inject private IDBService dbService;
 	
 	//Protocol
@@ -34,8 +32,6 @@ public class DBSaverActor extends AbstractActor {
 	
 	private void onSaveMessage(SaveToDbMessage trackMessage) {
 		logger.info("***ACTOR-DB*** Got new Save message: ");
-		String dbHost = config.getString("db.host");
-		System.out.println("DB HOST - " + dbHost);
 		dbService.persist(trackMessage.getEntityStore());
 		getSender().tell(new DBSaveAck(), ActorRef.noSender());
 	}
@@ -50,7 +46,6 @@ public class DBSaverActor extends AbstractActor {
 	
 	@Override
 	public void postRestart(Throwable reason) throws Exception {
-//		super.postRestart(reason);
 		logger.info("DB Actor restart, sending ack to parent...");
 		context().parent().tell(new DBSaveAck(), ActorRef.noSender());
 	}
