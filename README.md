@@ -16,7 +16,8 @@ This project is intended to periodically store entities to MongoDB, using:
 ### How do I get set up? ###
 
 * Git clone project
-* mvn clean install
 * Create configuration file, config.properties. Example can be found in test directory - RecorderConfigTest.java
 * Create environment variable - LOCAL_CONFIG_DIR that contains path to config file.
-* run main class
+* mvn clean 
+* mvn install
+* run jar: java -jar target\bluetorch-recorder-0.0.1-SNAPSHOT-jar-with-dependencies.jar
