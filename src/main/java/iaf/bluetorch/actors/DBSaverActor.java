@@ -13,10 +13,10 @@ import akka.actor.Props;
 import com.google.inject.Inject;
 
 public class DBSaverActor extends AbstractActor {
-	
+
 	@Inject private Logger logger;
 	@Inject private IDBService dbService;
-	
+
 	//Protocol
 	public static class SaveToDbMessage {
 		private IEntityStore trackStore;
@@ -29,13 +29,13 @@ public class DBSaverActor extends AbstractActor {
 			return trackStore;
 		}
 	}
-	
+
 	private void onSaveMessage(SaveToDbMessage trackMessage) {
 		logger.info("***ACTOR-DB*** Got new Save message: ");
 		dbService.persist(trackMessage.getEntityStore());
 		getSender().tell(new DBSaveAck(), ActorRef.noSender());
 	}
-	
+
 	@Override
 	public Receive createReceive() {
 		return receiveBuilder()
@@ -43,7 +43,7 @@ public class DBSaverActor extends AbstractActor {
 				.matchAny(somethingElse -> logger.warn("Recieved something else"))
 				.build();
 	}
-	
+
 	@Override
 	public void postRestart(Throwable reason) throws Exception {
 		logger.info("DB Actor restart, sending ack to parent...");
