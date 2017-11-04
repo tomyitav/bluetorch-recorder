@@ -2,13 +2,19 @@ package iaf.bluetorch.db.service;
 import iaf.bluetorch.db.config.IMongoDB;
 import iaf.bluetorch.db.entities.BasicEntity;
 
-import org.apache.logging.log4j.Logger;
-import org.bson.types.ObjectId;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Key;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
 
+import org.apache.logging.log4j.Logger;
+import org.bson.Document;
+import org.bson.types.ObjectId;
+
+import com.google.common.collect.Lists;
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
+import com.mongodb.client.MongoCollection;
+import com.mongodb.client.MongoDatabase;
 
 /**
  * The generic Persistence implementation, showing how to do persists, count entities, return a
@@ -28,14 +34,21 @@ public class MongodbGenericPersistence implements IDBService {
 
 	public <E extends BasicEntity> ObjectId persist(E entity) {
 		logger.debug("Saving entity to db...");
-		getDatastore().save(entity);
-		return entity.getId();
+		MongoCollection<Document> c = this.getDBConn().getCollection(entity.getCollectionName());
+		Document document = entity.asDBObject();
+		c.insertOne(document);
+//		getDBConn().save(entity);
+		return document.getObjectId(document);
 	}
 	
-	public <E extends BasicEntity> Iterable<Key<E>> persist(Iterable<E> entity) {
+	public <E extends BasicEntity> Iterable<E> persist(Iterable<E> entities) {
 		logger.debug("Saving entity collection to db...");
-		Iterable<Key<E>> keys = getDatastore().save(entity);
-		return keys;
+		ArrayList<E> entitiesAsList = Lists.newArrayList(entities);
+		String collectionName = entitiesAsList.get(0).getCollectionName();
+		List<Document> documentsList = entitiesAsList.stream().map(e -> e.asDBObject()).collect(Collectors.toList());
+		MongoCollection<Document> c = this.getDBConn().getCollection(collectionName);
+		c.insertMany(documentsList);
+		return null;
 	}
 
 	public <E extends BasicEntity> long count(Class<E> clazz) {
@@ -43,7 +56,7 @@ public class MongodbGenericPersistence implements IDBService {
 			return 0;
 		}
 
-		return getDatastore().find(clazz).count();
+		return 1;
 	}
 
 	public <E extends BasicEntity> E get(Class<E> clazz, final ObjectId id) {
@@ -51,10 +64,10 @@ public class MongodbGenericPersistence implements IDBService {
 			return null;
 		}
 
-		return getDatastore().find(clazz).field("id").equal(id).get();
+		return null;
 	}
 
-	private Datastore getDatastore() {
+	private MongoDatabase getDBConn() {
 		return mongoConn.getDatabase();
 	}
 

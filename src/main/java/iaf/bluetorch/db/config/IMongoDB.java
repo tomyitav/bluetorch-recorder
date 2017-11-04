@@ -1,7 +1,7 @@
 package iaf.bluetorch.db.config;
 
-import org.mongodb.morphia.Datastore;
+import com.mongodb.client.MongoDatabase;
 
 public interface IMongoDB {
-	public Datastore getDatabase();
+	public MongoDatabase getDatabase();
 }

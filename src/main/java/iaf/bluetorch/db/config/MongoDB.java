@@ -1,11 +1,8 @@
 package iaf.bluetorch.db.config;
 
 import iaf.bluetorch.core.IRecorderConfig;
-import iaf.bluetorch.db.entities.BasicEntity;
 
 import org.apache.logging.log4j.Logger;
-import org.mongodb.morphia.Datastore;
-import org.mongodb.morphia.Morphia;
 
 import com.google.inject.Inject;
 import com.google.inject.Singleton;
@@ -13,6 +10,7 @@ import com.mongodb.MongoClient;
 import com.mongodb.MongoClientOptions;
 import com.mongodb.ReadPreference;
 import com.mongodb.ServerAddress;
+import com.mongodb.client.MongoDatabase;
 
 /**
  * MongoDB providing the database connection for main.
@@ -22,16 +20,17 @@ public class MongoDB implements IMongoDB {
 
 	private IRecorderConfig config;
 	private Logger logger;
-	private Datastore datastore;
+	private MongoClient mongoClient;
+	private MongoDatabase dbConnection;
 	
 	@Inject 
 	public MongoDB(IRecorderConfig configuration, Logger logger) {
 		this.logger = logger;
 		this.config = configuration;
-		this.datastore = initializeDatastore();
+		this.dbConnection = createDbConn();
 	}
 
-	private Datastore initializeDatastore() {
+	private MongoDatabase createDbConn() {
 		String dbHost = this.config.dbHost();
 		int dbPort = this.config.dbPort();
 		String dbName = this.config.dbName();
@@ -45,19 +44,12 @@ public class MongoDB implements IMongoDB {
 		.maxConnectionIdleTime(maxConnectionIdleTime) // Keep idle connections for 10m, so we discard failed connections quickly
 		.readPreference(ReadPreference.primaryPreferred()) // Read from the primary, if not available use a secondary
 		.build();
-	    MongoClient mongoClient;
-	    mongoClient = new MongoClient(new ServerAddress(dbHost, dbPort), mongoOptions);
-	
-	//    mongoClient.setWriteConcern(WriteConcern.SAFE);
-	    Datastore datastore = new Morphia().mapPackage(BasicEntity.class.getPackage().getName())
-		.createDatastore(mongoClient, dbName);
-	    datastore.ensureIndexes();
-	    datastore.ensureCaps();
+	    this.mongoClient = new MongoClient(new ServerAddress(dbHost, dbPort), mongoOptions);
 	    logger.info("Connection to database '" + dbHost + ":" + dbPort + "/" + dbPort + "' initialized");
-	    return datastore;
+	    return mongoClient.getDatabase(dbName);
 	}
 
-	public Datastore getDatabase() {
-		return datastore;
+	public MongoDatabase getDatabase() {
+		return dbConnection;
 	}
 }
