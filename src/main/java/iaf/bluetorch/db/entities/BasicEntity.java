@@ -1,4 +1,6 @@
 package iaf.bluetorch.db.entities;
+import java.util.Date;
+
 import org.bson.Document;
 
 /**
@@ -23,7 +25,10 @@ public abstract class BasicEntity {
 
   
   public Document asDBObject() {
-	  return Document.parse(this.getJsonString());
+	  Document entityDocument = Document.parse(this.getJsonString());
+	  Date creationDate = new Date();
+	  entityDocument.append("creationDate", creationDate);
+	  return entityDocument;
   }
 
   public abstract String getJsonString();
