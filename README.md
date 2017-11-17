@@ -3,7 +3,7 @@
 This project is intended to periodically store entities to MongoDB, using:
 
  - Akka
- - Morphia as mongo ODM
+ - mongo-java-driver
  - Guice for DI
 
 ### Project structure ###
